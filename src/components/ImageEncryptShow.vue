@@ -23,6 +23,7 @@
 import { onBeforeMount, ref } from 'vue';
 import { PageCotrol } from '@/pagecontrol/PageControl';
 import FullImageViewer from './FullImageViewer.vue';
+import fileManagerInstance from '@/pagecontrol/FileManager';
 
 const imageUrl = ref('');
 const isFullscreen = ref(false);
@@ -34,10 +35,12 @@ onBeforeMount(() => {
 const modifyImage = (file) => {
     if (!file) {
         imageUrl.value = '';
+        fileManagerInstance.setImageEncryptedFile(null);
         isFullscreen.value = false;
         return;
     }
     imageUrl.value = file;
+    fileManagerInstance.setImageEncryptedFile(imageUrl.value);
 };
 
 const showFullscreen = () => {
@@ -57,6 +60,8 @@ const removeImage = () => {
     position: relative;
     width: 90%;
     height: 60%;
+    max-width: 558px;
+    max-height: 408px;
     border: 2px dashed #ccc;
     border-radius: 8px;
     display: flex;

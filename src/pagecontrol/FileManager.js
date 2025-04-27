@@ -7,6 +7,9 @@ class fileManager {
         this.imageOriginalFile = null;
         this.imageEncryptedFile = null;
         this.imageDecryptedFile = null;
+
+        this.imageDecryptPermHigh = null;
+        this.imageDecryptPermData = null;
     }
 
     setImageOriginalFile(file) {
@@ -26,6 +29,19 @@ class fileManager {
     }
     getImageDecryptedFile() {
         return this.imageDecryptedFile;
+    }
+
+    setImageDecryptPermHigh(file) {
+        this.imageDecryptPermHigh = file;
+    }
+    getImageDecryptPermHigh() {
+        return this.imageDecryptPermHigh;
+    }
+    setImageDecryptPermData(file) {
+        this.imageDecryptPermData = file;
+    }
+    getImageDecryptPermData() {
+        return this.imageDecryptPermData;
     }
 
 

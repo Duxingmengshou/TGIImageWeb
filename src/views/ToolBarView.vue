@@ -2,7 +2,9 @@
     <div class="toolbar-container">
         <div class="button-group">
             <button class="toolbar-button" @click="handleEncryptButton">加密</button>
+            <div class="divider"></div>
             <button class="toolbar-button" @click="handleDecryptButton">解密</button>
+            <div class="divider"></div>
             <button class="toolbar-button" @click="handleAboutmeButton">关于</button>
         </div>
     </div>
@@ -15,9 +17,11 @@ import requestControlInstance from '@/pagecontrol/RequestControl';
 
 const handleEncryptButton = () => {
     if (fileManagerInstance.getImageOriginalFile()) {
-        requestControlInstance.post('/upload/image', { data: fileManagerInstance.getImageOriginalFile() }).then((response) => {
-            PageCotrol.ModifyEncryptImage(response.processed_data);
-            PageCotrol.ModifyDecryptImage(response.processed_data2);
+        requestControlInstance.post('/upload/encrypt_image', { data: fileManagerInstance.getImageOriginalFile() }).then((response) => {
+            PageCotrol.ModifyEncryptImage(response.encrypted_data);
+            fileManagerInstance.setImageDecryptPermData(response.encrypt_info.perm);
+            fileManagerInstance.setImageDecryptPermHigh(response.encrypt_info.perm_high);
+            // console.log(fileManagerInstance);
         }).catch((error) => {
             console.error('请求失败:', error);
         });
@@ -27,11 +31,24 @@ const handleEncryptButton = () => {
 };
 
 const handleDecryptButton = () => {
-    requestControlInstance.get('/check').then((response) => {
-        console.log(response);
-    }).catch((error) => {
-        console.error('请求失败:', error);
-    });
+    if (fileManagerInstance.getImageEncryptedFile()) {
+        requestControlInstance.post('/upload/decrypt_image', {
+            encrypted_data: fileManagerInstance.getImageEncryptedFile(),
+            encrypt_info: {
+                perm_high: fileManagerInstance.getImageDecryptPermHigh(),
+                perm: fileManagerInstance.getImageDecryptPermData()
+            }
+        }).then((response) => {
+            PageCotrol.ModifyDecryptImage(response.decrypted_data);
+            fileManagerInstance.setImageDecryptedFile(response.decrypted_data);
+            // console.log(fileManagerInstance);
+        }).catch((error) => {
+            console.error('请求失败:', error);
+        });
+    } else {
+        console.error('没有可用的图片文件');
+    }
+
 };
 
 const handleAboutmeButton = () => {
@@ -61,8 +78,9 @@ const handleAboutmeButton = () => {
 .toolbar-button {
     width: 100%;
     height: 100%;
-    background-color: #4CAF50;
-    color: white;
+    background-color: transparent;
+    color: #808080;
+    /* font-weight: bold; */
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -71,10 +89,18 @@ const handleAboutmeButton = () => {
 }
 
 .toolbar-button:hover {
-    background-color: #45a049;
+    background-color: #ededed;
 }
 
 .toolbar-button:active {
-    background-color: #3e8e41;
+    background-color: #cfcfcfc1;
+}
+
+.divider {
+    width: 1px;
+    height: 100%;
+    background-color: #27a700;
+    margin: 0 8px;
+    /* 控制间距 */
 }
 </style>

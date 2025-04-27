@@ -1,5 +1,7 @@
 <template>
     <div class="main-container">
+        <h1 style="text-align: center; margin-top: 50px;">软件模拟时域鬼成像图像加密</h1>
+        <h7 style="text-align: center; margin-top: 60px;">ganjinbo(2025)©版权所有</h7>
         <!-- 上方三列平铺 -->
         <div class="image-row">
             <div class="image-column">

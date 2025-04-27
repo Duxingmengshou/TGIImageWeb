@@ -63,6 +63,8 @@ const showFullscreen = () => {
     position: relative;
     width: 90%;
     height: 60%;
+    max-width: 558px;
+    max-height: 408px;
     border: 2px dashed #ccc;
     border-radius: 8px;
     display: flex;
